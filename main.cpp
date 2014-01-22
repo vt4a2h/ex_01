@@ -51,20 +51,17 @@ namespace prime {
 
 int main()
 {
-    std::default_random_engine gen;
-    std::uniform_int_distribution<int> distr(1, 1000);
-    auto makeRand = std::bind(distr, gen);
-
     // Шаги по заданию 2.
     // 1. Создание вектора.
     std::vector<int> v1(100);
 
     // 2. Заполение вектора псевдослучайными значениями.
-    std::transform(v1.begin(), v1.end(), v1.begin(), [&](int)->int{ return makeRand();});
+    std::default_random_engine gen;
+    std::uniform_int_distribution<int> distr(1, 1000);
+    std::generate(v1.begin(), v1.end(), std::bind(distr, gen));
 
     // 3. Вывод вектора.
-    std::ostream_iterator<int> out_it(std::cout, " ");
-    std::copy(v1.begin(), v1.end(), out_it);
+    std::copy(v1.begin(), v1.end(), std::ostream_iterator<int>(std::cout, " "));
 
     // 4. Сортировка вектора.
     std::sort(v1.begin(), v1.end());
